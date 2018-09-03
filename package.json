@@ -2,11 +2,8 @@
   "name": "selection-range",
   "description": "get or set the selction range, or cursor position, for contenteditable",
   "version": "1.1.0",
-  "keywords": [
-  ],
-  "dependencies": {
-    "dom-iterator": "0.3.0"
-  },
+  "keywords": [],
+  "dependencies": {},
   "component": {
     "scripts": {
       "selection-range/index.js": "index.js"
@@ -16,6 +13,9 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bmcmahen/selection-range.git"
+    "url": "https://github.com/dncnmcdougall/selection-range.git"
+  },
+  "devDependencies": {
+    "domify": "github:dncnmcdougall/domify"`
   }
 }

@@ -2,14 +2,9 @@
  * Module Dependencies
  */
 
-var iterator = require('dom-iterator');
+// var iterator = require('dom-iterator');
 var selection = window.getSelection();
 
-/**
- * Expose position fn
- */
-
-module.exports = position;
 
 /**
  * Get or set cursor, selection, relative to
@@ -19,6 +14,7 @@ module.exports = position;
  * @param  {Object} pos selection range
  * @return {Object|Undefined}
  */
+
 
 function position(el, pos){
 
@@ -50,16 +46,32 @@ function position(el, pos){
   var setSelection = pos.end && (pos.end !== pos.start);
   var length = 0;
   var range = document.createRange();
-  var it = iterator(el).select(Node.TEXT_NODE).revisit(false);
+
+    var it = document.createNodeIterator(el,
+        NodeFilter.SHOW_ALL, {
+            acceptNode: function(node) {
+                if ( node.nodeType == Node.TEXT_NODE ) {
+                    return NodeFilter.FILTER_ACCEPT;
+                } else if ( node.nodeType == Node.ELEMENT_NODE 
+                    && node.nodeName == "BR" ) {
+                        return NodeFilter.FILTER_ACCEPT;
+                }
+                return NodeFilter.FILTER_SKIP;
+            }
+        });
+
+  // var it = iterator(el).select(Node.TEXT_NODE).revisit(false);
   var next;
   var startindex;
   var start = pos.start > el.textContent.length ? el.textContent.length : pos.start;
   var end = pos.end > el.textContent.length ? el.textContent.length : pos.end;
   var atStart = pos.atStart;
 
-  while (next = it.next()){
+  while (next = it.nextNode()){
+    console.log('hi:', next.nodeName, next.data);
     var olen = length;
     length += next.textContent.length;
+    console.log('em:', olen, length);
 
     // Set start point of selection
     var atLength = atStart ? length > start : length >= start;
@@ -74,7 +86,12 @@ function position(el, pos){
     }
 
     // Set end point of selection
-    if (setSelection && (length >= end)) {
+    if (setSelection && (length > end)) {
+      range.setEnd(next, end - olen);
+      makeSelection(el, range);
+      break;
+    }
+    if (setSelection && (length == end)) {
       range.setEnd(next, end - olen);
       makeSelection(el, range);
       break;
@@ -94,3 +111,5 @@ function makeSelection(el, range){
   selection.removeAllRanges();
   selection.addRange(range);
 }
+
+export {position};
