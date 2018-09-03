@@ -1,5 +1,6 @@
-import {position as sRange} from '../index.js';
 import { parse as domify}  from '../node_modules/domify/index.js';
+
+var sRange = position;
 
 var selection = window.getSelection;
 

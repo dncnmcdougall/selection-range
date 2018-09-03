@@ -111,8 +111,6 @@ function makeSelection(el, range){
   selection.addRange(range);
 }
 
-if ( module ) {
+if ( typeof module !== 'undefined' ) {
     module.exports = position;
-} else {
-    export {position};
 }
