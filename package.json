@@ -16,6 +16,6 @@
     "url": "https://github.com/dncnmcdougall/selection-range.git"
   },
   "devDependencies": {
-    "domify": "github:dncnmcdougall/domify"`
+    "domify": "github:dncnmcdougall/domify"
   }
 }

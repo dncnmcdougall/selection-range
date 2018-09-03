@@ -1,0 +1,4 @@
+
+.content:focus {
+    border: solid blue thin;
+}

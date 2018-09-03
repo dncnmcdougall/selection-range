@@ -68,10 +68,8 @@ function position(el, pos){
   var atStart = pos.atStart;
 
   while (next = it.nextNode()){
-    console.log('hi:', next.nodeName, next.data);
     var olen = length;
     length += next.textContent.length;
-    console.log('em:', olen, length);
 
     // Set start point of selection
     var atLength = atStart ? length > start : length >= start;
@@ -86,16 +84,17 @@ function position(el, pos){
     }
 
     // Set end point of selection
-    if (setSelection && (length > end)) {
+    if (setSelection && (length >= end)) {
       range.setEnd(next, end - olen);
       makeSelection(el, range);
       break;
     }
-    if (setSelection && (length == end)) {
-      range.setEnd(next, end - olen);
+  }
+  if ( !startindex && atStart && length>=start ) {
+      startindex = true;
+      range.setStartAfter(el.lastChild);
+      range.collapse(true);
       makeSelection(el, range);
-      break;
-    }
   }
 }
 

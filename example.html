@@ -1,24 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title></title>
+  <meta charset="utf-8">
+  <title>selection-range example</title>
+  <link rel="stylesheet" href="TestRunner.css">
 </head>
 <body>
 
 <article>
-  <div id='content' contenteditable='true'>
+  <div class="content" id='content' contenteditable='true'>
     <p>hello world</p>
-    <p><br> </p>
-    <p><br> </p>
+    <p><br></p>
+    <p><br></p>
     <p>Another paragraph</p>
   </div>
 </article>
 <button id='setrange'> restore range </button>
 <button id='getrange'> save range </button>
+<button id='transrange'> transfer range </button>
+<article>
+  <div class="content" id='contentOther' contenteditable='true'>
+    <p>hello world</p>
+    <p><br></p>
+    <p><br></p>
+    <p>Another paragraph</p>
+    <p><br></p>
+  </div>
+</article>
 <script src='build/build.js'></script>
-<script>
-var position = require('selection-range');
+<script type="module">
+import {position} from "./index.js";
 var el = document.getElementById('content');
+var elOther = document.getElementById('contentOther');
 
 var r = null;
 
@@ -32,6 +45,15 @@ document.getElementById('setrange').onclick = function(){
 document.getElementById('getrange').onclick = function(){
   r = position(el);
   console.log('saving range', r);
+};
+
+document.getElementById('transrange').onclick = function(){
+  r = position(el);
+  console.log('transfering range', r);
+  if (r) {
+    console.log('setting range to', r);
+    position(elOther, r);
+  }
 };
 </script>
 </body>
