@@ -92,12 +92,13 @@ describe('selection-range', function(){
     expect(r.end).toBe( el.textContent.length);
   });
   it('should select the end of the element if out of range.', function(){
-    var el1 = domify('<div class="first"><p>The cat jumped</p><p><br></p></div>');
-    var el2 = domify('<div class="second"><p>The cat jumped</p><p><br></p></div>');
+    var el1 = domify('<div class="first"><p>The cat jumped</p><p id="firstBr"><br></p></div>');
+    var el2 = domify('<div class="second"><p>The cat jumped</p><p id="secondBr"><br></p></div>');
     document.body.appendChild(el1);
     document.body.appendChild(el2);
-    var ps1 = el1.querySelectorAll('p');
-    var ps2 = el2.querySelectorAll('p');
+
+    var ps1 = document.getElementById('firstBr');
+    var ps2 = document.getElementById('secondBr');
     var range = document.createRange();
     range.setStartBefore( el1.lastChild.lastChild );
     range.collapse(true);
@@ -107,15 +108,15 @@ describe('selection-range', function(){
     expect(r1.start).toBe(el1.textContent.length);
     expect(r1.end).toBe( el1.textContent.length);
 
-    expect(r1.startContainer).toEqual(ps1[1]);
-    expect(r1.endContainer).toEqual(ps1[1]);
-    expect(r1.commonAncestorContainer).toEqual(ps1[1]);
+    expect(r1.startContainer).toEqual(ps1);
+    expect(r1.endContainer).toEqual(ps1);
+    expect(r1.commonAncestorContainer).toEqual(ps1);
 
     sRange(el2, r1);
     var r2 = sRange(el2);
-    expect(r2.startContainer).toEqual(el2);
-    expect(r2.endContainer).toEqual(el2);
-    expect(r2.commonAncestorContainer).toEqual(el2);
+    expect(r2.startContainer).toEqual(ps2);
+    expect(r2.endContainer).toEqual(ps2);
+    expect(r2.commonAncestorContainer).toEqual(ps2);
 
     expect(r1.start).toEqual(r2.start);
     expect(r1.end).toEqual(r2.end);

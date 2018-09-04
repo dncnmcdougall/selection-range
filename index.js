@@ -62,6 +62,7 @@ function position(el, pos){
 
   // var it = iterator(el).select(Node.TEXT_NODE).revisit(false);
   var next;
+  var previous = null;
   var startindex;
   var start = pos.start > el.textContent.length ? el.textContent.length : pos.start;
   var end = pos.end > el.textContent.length ? el.textContent.length : pos.end;
@@ -89,10 +90,15 @@ function position(el, pos){
       makeSelection(el, range);
       break;
     }
+    previous = next;
   }
-  if ( !startindex && atStart && length>=start ) {
+  if ( !startindex && length>=start ) {
       startindex = true;
-      range.setStartAfter(el.lastChild);
+      if ( atStart ) {
+          range.setStartBefore(previous);
+      } else {
+          range.setStartAfter(previous);
+      }
       range.collapse(true);
       makeSelection(el, range);
   }
